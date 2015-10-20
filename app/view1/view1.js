@@ -11,18 +11,14 @@ angular.module('myApp.view1', ['ngRoute'])
 
 .controller('View1Ctrl', ['$scope','Personen',function($scope,Personen) {
 
-
-      var personenRepository = new Personen();
-
-      $scope.personen = personenRepository.getAll();
-
-
+      $scope.personen = Personen.getAll();
+console.log(Personen);
       $scope.addPerson = function() {
-        personenRepository.addPerson();
+          Personen.addPerson();
       }
 
       $scope.save = function() {
-        personenRepository.save();
+          Personen.save();
       }
 
 

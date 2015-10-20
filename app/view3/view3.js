@@ -11,9 +11,7 @@ angular.module('myApp.view3', ['ngRoute'])
 
 .controller('View3Ctrl', ['$scope','Personen','$route',function($scope,Personen,$routeProvider) {
 
-      var personenRepository = new Personen();
-
-      $scope.person = personenRepository.getById($routeProvider.current.params.idPerson);
+      $scope.person = Personen.getById($routeProvider.current.params.idPerson);
 
 
 }]);

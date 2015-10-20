@@ -12,9 +12,8 @@ angular.module('myApp.view2', ['ngRoute'])
 .controller('View2Ctrl', ['$scope','Personen',function($scope,Personen) {
 
 
-      var personenRepository = new Personen();
 
-      $scope.personen = personenRepository.getAll();
+      $scope.personen = Personen.getAll();
 
 
 }]);

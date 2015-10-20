@@ -15,7 +15,17 @@
            }
 
            function Personen() {
-              this.repository = $rootScope._Personen;
+               Object.defineProperties(this,{
+
+                   'repository': {
+                       get: function () {
+                           return $rootScope._Personen;
+                       },
+                       configurable: false,
+                       enumerable: false
+
+                   }
+               });
            }
 
            Person.prototype = {
@@ -50,7 +60,9 @@
            };
 
 
-           return Personen;
+
+         return new Personen;
+
 
 
        }]
