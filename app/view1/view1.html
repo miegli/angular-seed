@@ -1,0 +1,10 @@
+<p>This is the partial for view 1.</p>
+<ul>
+    <li ng-repeat="person in personen">
+        <input type="text" ng-model="person.name">
+        <a href="#view3/{{person.id}}">Details</a>
+    </li>
+</ul>
+
+<input type="button" ng-click="addPerson()" value="add">
+<input type="button" ng-click="save()" value="save all">
