@@ -12,13 +12,17 @@ angular.module('myApp.view1', ['ngRoute'])
 .controller('View1Ctrl', ['$scope','Personen',function($scope,Personen) {
 
       $scope.personen = Personen.getAll();
-console.log(Personen);
+
       $scope.addPerson = function() {
-          Personen.addPerson();
+          Personen.add();
       }
 
       $scope.save = function() {
           Personen.save();
+      }
+
+      $scope.remove = function(person) {
+          Personen.removePerson(person);
       }
 
 

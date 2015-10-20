@@ -4,13 +4,17 @@
 
    app.factory(
        "Personen",
-       ['$rootScope','uuid2','$cookies',function($rootScope,uuid2,$cookies) {
+       ['uuid2','$cookies',function(uuid2,$cookies) {
 
-           $rootScope._Personen = $cookies.getObject('_Personen') || {};
+           var PersonenRepository;
+
 
            function Person() {
                this.id = uuid2.newuuid();
                this.name = 'unbekannt';
+               this.toString = function () {
+                   return this.name;
+               }
                return this;
            }
 
@@ -19,7 +23,7 @@
 
                    'repository': {
                        get: function () {
-                           return $rootScope._Personen;
+                           return this;
                        },
                        configurable: false,
                        enumerable: false
@@ -37,6 +41,7 @@
                    this.name = name;
                }
 
+
            };
 
 
@@ -48,10 +53,23 @@
                getById : function(id) {
                    return this.repository[id];
                },
-               addPerson : function() {
-
+               add: function(person) {
                    var p = new Person();
+                   if (person) {
+                       // preserve typeof
+                       angular.forEach(person,function(value,key) {
+                            if (p.hasOwnProperty(key)) p[key] = value;
+                       })
+                   }
                    this.repository[p.id] = p;
+               },
+               removePerson : function(p) {
+                    if (p instanceof Person) {
+                        delete this[p.id];
+                    } else {
+                        throw new Error("Param 'p' is not an instance of Person");
+                    }
+                   //
                },
                save : function() {
                    $cookies.putObject('_Personen',this.repository)
@@ -59,9 +77,12 @@
 
            };
 
-
-
-         return new Personen;
+           // loads Personen from cookie object storage and returns the repository
+           PersonenRepository = new Personen();
+           angular.forEach($cookies.getObject('_Personen'),function(person) {
+               PersonenRepository.add(person);
+           });
+           return PersonenRepository;
 
 
 
