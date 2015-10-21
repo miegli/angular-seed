@@ -65,18 +65,20 @@
 
                 add: function (person) {
 
-                    console.log("add ",person.id);
 
-                    var p = this.repository[person.id] || new Person();
+                    if (person && person.id) {
+                        var id = person.id;
+                    } else {
+                        var id =  uuid2.newuuid();
+                    }
 
-                    console.log("add2 ",p);
-
-                    this.repository[p.id] = p;
+                    var p = this.repository[id] || new Person(id);
+                    this.repository[id] = p;
 
                     if (person) {
                         // preserve typeof
                         angular.forEach(person, function (value, key) {
-                            if (p.hasOwnProperty(key) && key !== 'id') p[key] = value;
+                            if (p.hasOwnProperty(key)) p[key] = value;
                         })
                     }
 

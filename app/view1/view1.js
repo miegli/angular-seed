@@ -11,7 +11,7 @@ angular.module('myApp.view1', ['ngRoute'])
 
 .controller('View1Ctrl', ['$scope','Personen',function($scope,Personen) {
 
-      $scope.personen = Personen.load('http://localhost:63342/angular-seed/data/personen.json').getAll();
+      $scope.personen = Personen.load('../data/personen.json').getAll();
 
 
       $scope.addPerson = function() {
