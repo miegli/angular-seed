@@ -13,7 +13,7 @@ angular.module('myApp.view2', ['ngRoute'])
 
 
 
-        $scope.personen = Personen.getAll();
+        $scope.personen = Personen.load('http://localhost:63342/angular-seed/data/personen.json').getAll();
 
 
         $scope.reload = function() {

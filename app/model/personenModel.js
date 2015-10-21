@@ -2,27 +2,16 @@
 
     "use strict";
 
-    app.constant(
-        'PersonenConfig',
-        {
-            'url': 'http://localhost:63342/angular-seed/data/personen.json'
-
-        }
-    )
-
-
     app.factory(
         "Personen",
-        ['uuid2', '$cookies', '$http', 'PersonenConfig', function (uuid2, $cookies, $http, PersonenConfig) {
+        ['uuid2', '$cookies', '$http', function (uuid2, $cookies, $http) {
 
-            var PersonenRepository;
 
-            function Person() {
-                this.id = uuid2.newuuid();
-                this.name = 'unbekannt';
-                this.toString = function () {
-                    return this.name;
-                }
+            var PersonenRepository, config = {};
+
+            function Person(id) {
+                this.id = id || uuid2.newuuid();
+                this.name = '';
                 return this;
             }
 
@@ -57,27 +46,49 @@
 
             Personen.prototype = {
 
+
                 getAll: function () {
+
                     return this.repository;
+
                 },
+
                 getById: function (id) {
+
+                    if (this.repository[id] === undefined) {
+                        this.repository[id] = new Person(id);
+                    }
+
                     return this.repository[id];
+
                 },
+
                 add: function (person) {
-                    var p = new Person();
+
+                    console.log("add ",person.id);
+
+                    var p = this.repository[person.id] || new Person();
+
+                    console.log("add2 ",p);
+
+                    this.repository[p.id] = p;
+
                     if (person) {
                         // preserve typeof
                         angular.forEach(person, function (value, key) {
-                            if (p.hasOwnProperty(key)) p[key] = value;
+                            if (p.hasOwnProperty(key) && key !== 'id') p[key] = value;
                         })
                     }
-                    this.repository[p.id] = p;
-                    return p;
+
+                    return this;
 
                 },
                 removeAll: function () {
-                    angular.forEach(PersonenRepository, function (person) {
-                        delete PersonenRepository[person.id];
+
+                    angular.forEach(this.repository, function (person,id) {
+
+                       delete PersonenRepository[id];
+
                     });
                     return this;
                 },
@@ -91,57 +102,66 @@
                     return this;
 
                 },
-                reload: function () {
-                    this.removeAll().load();
+                reload: function (url) {
+
+                    this.removeAll().load(url,true);
+
                     return this;
                 },
 
-                refresh: function () {
-                    this.removeAll().load();
-                    return this;
-                },
-
-
-                save: function () {
+               save: function () {
                     $cookies.putObject('_Personen', this.repository);
                     return this;
                 },
 
 
-                load: function () {
+                load: function (url,forceload) {
+
+                    if (url === config.url && !forceload) {
+                        return this;
+                    } else { }
 
 
-                     // loads Personen from cookie object storage and returns the repository
-                     angular.forEach($cookies.getObject('_Personen'),function(person) {
-                     PersonenRepository.add(person);
-                     });
 
+                    url = url || config.url || false;
+
+                    if (url) {
+                        // GET request json data:
+                        $http({
+                            method: 'GET',
+                            url: url,
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                        }).then(function successCallback(response) {
+
+                            console.log(response.data);
+
+                            if (typeof response.data === 'object') {
+                                angular.forEach(response.data, function (person) {
+                                    PersonenRepository.add(person);
+                                });
+                            } else {
+                                throw new Error("error loading json personen is type of " + typeof response.data);
+                            }
+
+                        }, function errorCallback(response) {
+                            throw new Error("error loading json personen");
+                        });
+
+                        config.url = url;
+
+                    } else {
+                        if (!forceload) throw new Error("no personen url provided");
+                    }
 
 
                     /*
-                    // GET request json data:
-                    $http({
-                        method: 'GET',
-                        url: PersonenConfig.url,
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                    }).then(function successCallback(response) {
-
-                        if (typeof response.data === 'object') {
-                            angular.forEach(response.data, function (person) {
-                                PersonenRepository.add(person);
-                            });
-                        } else {
-                            throw new Error("error loading json personen is type of "+typeof response.data);
-                        }
-
-                    }, function errorCallback(response) {
-                        throw new Error("error loading json personen");
+                    // loads Personen from cookie object storage and returns the repository
+                     angular.forEach($cookies.getObject('_Personen'),function(person) {
+                        PersonenRepository.add(person);
                     });
-
-
-                     */
+                    */
 
 
 
@@ -155,8 +175,7 @@
 
 
             PersonenRepository = new Personen();
-            PersonenRepository.load();
-
+           // PersonenRepository.load();
 
             return PersonenRepository;
 
