@@ -2,8 +2,9 @@
 <ul>
     <li ng-repeat="person in personen">
         <input type="text" ng-model="person.name">
+        <input type="text" ng-model="person.vorname">
         <input type="button" ng-click="remove(person)" value="delete">
-        <a href="#view3/{{person.id}}">Details</a>
+        <a href="#view3/{{person.id}}">Details {{person.getFullname()}}</a>
     </li>
 </ul>
 

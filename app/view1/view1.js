@@ -11,15 +11,16 @@ angular.module('myApp.view1', ['ngRoute'])
 
 .controller('View1Ctrl', ['$scope','Personen',function($scope,Personen) {
 
-      $scope.personen = Personen.load('../data/personen.json').getAll();
-
+      //$scope.personen = Personen.loadJson('../data/personen.json').getAll();
+      $scope.personen = Personen.loadFromCookie('_Personen').getAll();
 
       $scope.addPerson = function() {
           Personen.add();
       }
 
       $scope.save = function() {
-          Personen.save();
+          Personen.saveToCookie('_Personen');
+          console.log(Personen.serialize());
       }
 
       $scope.remove = function(person) {
