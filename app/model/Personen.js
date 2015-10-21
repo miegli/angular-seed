@@ -8,7 +8,7 @@
 
             var Repository, config = {};
 
-   
+
             // define Model
             function Model(id) {
 
@@ -19,7 +19,6 @@
                 // return this sealed model width uuid
                 this.id = id || uuid2.newuuid();
                 return Object.seal(this);
-                ;
 
             }
 
@@ -46,7 +45,6 @@
                 });
 
 
-
                 return this;
             }
 
@@ -57,12 +55,12 @@
                 // get all instance of model (dont'change)
                 getAll: function () {
 
-                        return this.repository;
+                    return this.repository;
 
 
                 },
 
-                countAll: function() {
+                countAll: function () {
 
                     return Object.keys(this.repository).length;
 
@@ -175,7 +173,6 @@
                     }
 
 
-
                     return this;
 
 
@@ -184,7 +181,7 @@
                 loadFromCookie: function (cookieName) {
 
                     // register last loading function for later reload
-                    config.reloader = 'this.loadFromCookie("'+cookieName+'")';
+                    config.reloader = 'this.loadFromCookie("' + cookieName + '")';
 
                     if (cookieName === config.cookieName && !forceload) {
                         return this;
@@ -218,8 +215,6 @@
 
 
             Repository = new Repository();
-
-
             return Repository;
 
 
