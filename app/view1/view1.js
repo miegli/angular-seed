@@ -13,6 +13,7 @@ angular.module('myApp.view1', ['ngRoute'])
 
       $scope.personen = Personen.getAll();
 
+
       $scope.addPerson = function() {
           Personen.add();
       }
@@ -23,6 +24,10 @@ angular.module('myApp.view1', ['ngRoute'])
 
       $scope.remove = function(person) {
           Personen.removePerson(person);
+      }
+
+      $scope.reload = function() {
+          Personen.reload();
       }
 
 

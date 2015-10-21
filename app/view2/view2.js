@@ -13,7 +13,13 @@ angular.module('myApp.view2', ['ngRoute'])
 
 
 
-      $scope.personen = Personen.getAll();
+        $scope.personen = Personen.getAll();
 
 
-}]);
+        $scope.reload = function() {
+            Personen.reload();
+        };
+
+
+
+    }]);
