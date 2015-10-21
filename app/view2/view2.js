@@ -12,8 +12,8 @@ angular.module('myApp.view2', ['ngRoute'])
 .controller('View2Ctrl', ['$scope','Personen',function($scope,Personen) {
 
 
-
-        $scope.personen = Personen.getAll() || Personen.loadFromCookie('_Personen').getAll();
+        if (Personen.countAll() == 0) Personen.loadFromCookie('_Personen');
+        $scope.personen = Personen.getAll();
 
 
         $scope.reload = function() {

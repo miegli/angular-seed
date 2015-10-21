@@ -56,11 +56,15 @@
 
                 // get all instance of model (dont'change)
                 getAll: function () {
-                    if (Object.keys(this.repository).length > 0) {
+
                         return this.repository;
-                    } else {
-                        return false;
-                    }
+
+
+                },
+
+                countAll: function() {
+
+                    return Object.keys(this.repository).length;
 
                 },
 
@@ -147,6 +151,8 @@
 
                             // clear repository
                             Repository.removeAll();
+
+                            console.log(response);
 
                             // fill repository
                             if (typeof response.data === 'object') {
