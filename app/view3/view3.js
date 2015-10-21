@@ -11,8 +11,9 @@ angular.module('myApp.view3', ['ngRoute'])
 
 .controller('View3Ctrl', ['$scope','Personen','$route',function($scope,Personen,$routeProvider) {
 
-     $scope.person = Personen.loadFromCookie('_Personen').getById($routeProvider.current.params.idPerson);
+     if (!Personen.getAll()) Personen.loadFromCookie('_Personen');
 
+     $scope.person = Personen.getById($routeProvider.current.params.idPerson);
      console.log($scope.person);
 
 }]);

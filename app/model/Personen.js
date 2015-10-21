@@ -56,8 +56,12 @@
 
                 // get all instance of model (dont'change)
                 getAll: function () {
+                    if (Object.keys(this.repository).length > 0) {
+                        return this.repository;
+                    } else {
+                        return false;
+                    }
 
-                    return this.repository;
                 },
 
                 // get instance by model id (dont'change)
@@ -65,6 +69,7 @@
                     if (this.repository[id] === undefined) {
                         this.repository[id] = new Model(id);
                     }
+
                     return this.repository[id];
                 },
 
@@ -174,6 +179,12 @@
 
                     // register last loading function for later reload
                     config.reloader = 'this.loadFromCookie("'+cookieName+'")';
+
+                    if (cookieName === config.cookieName && !forceload) {
+                        return this;
+                    }
+
+                    cookieName = cookieName || config.cookieName || false;
 
                     // clear repository
                     Repository.removeAll();

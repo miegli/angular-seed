@@ -13,7 +13,7 @@ angular.module('myApp.view2', ['ngRoute'])
 
 
 
-        $scope.personen = Personen.loadFromCookie('_Personen').getAll();
+        $scope.personen = Personen.getAll() || Personen.loadFromCookie('_Personen').getAll();
 
 
         $scope.reload = function() {
