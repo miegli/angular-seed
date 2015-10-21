@@ -24,7 +24,7 @@ angular.module('myApp.view1', ['ngRoute'])
       }
 
       $scope.remove = function(person) {
-          Personen.removePerson(person);
+          Personen.remove(person);
       }
 
       $scope.reload = function() {

@@ -6,11 +6,11 @@
         "Personen",
         ['uuid2', '$cookies', '$http', function (uuid2, $cookies, $http) {
 
-            var PersonenRepository, config = {};
+            var Repository, config = {};
 
-
-            // define Person Model
-            function Person(id) {
+   
+            // define Model
+            function Model(id) {
 
                 // add properties
                 this.name = '';
@@ -24,7 +24,7 @@
             }
 
             // extend some custom prototype functions
-            Person.prototype = {
+            Model.prototype = {
 
                 getFullname: function () {
                     return this.name + " " + this.vorname;
@@ -33,8 +33,8 @@
             };
 
 
-            // define Personen Repository, don't change it
-            function Personen() {
+            // define Repository Repository, don't change it
+            function Repository() {
                 Object.defineProperties(this, {
                     'repository': {
                         get: function () {
@@ -45,28 +45,30 @@
                     }
                 });
 
+
+
                 return this;
             }
 
 
             // extend repository prototype functions
-            Personen.prototype = {
+            Repository.prototype = {
 
-                // get all instance of person (dont'change)
+                // get all instance of model (dont'change)
                 getAll: function () {
 
                     return this.repository;
                 },
 
-                // get  instance by persons id (dont'change)
+                // get instance by model id (dont'change)
                 getById: function (id) {
                     if (this.repository[id] === undefined) {
-                        this.repository[id] = new Person(id);
+                        this.repository[id] = new Model(id);
                     }
                     return this.repository[id];
                 },
 
-                // add new instance of persons (dont'change)
+                // add new instance of model (dont'change)
                 add: function (person) {
 
                     var id, p;
@@ -77,7 +79,7 @@
                         id = uuid2.newuuid();
                     }
 
-                    p = this.repository[id] || new Person(id);
+                    p = this.repository[id] || new Model(id);
                     this.repository[id] = p;
 
                     if (person) {
@@ -91,21 +93,21 @@
 
                 },
 
-                // remove all instances of persons (dont'change)
+                // remove all instances of model (dont'change)
                 removeAll: function () {
                     angular.forEach(this.repository, function (person, id) {
-                        delete PersonenRepository[id];
+                        delete Repository[id];
 
                     });
                     return this;
                 },
 
-                // remove an instance of person (dont'change)
-                removePerson: function (p) {
-                    if (p instanceof Person) {
+                // remove an instance of model (dont'change)
+                remove: function (p) {
+                    if (p instanceof Model) {
                         delete this[p.id];
                     } else {
-                        throw new Error("Param 'p' is not an instance of Person");
+                        throw new Error("Param 'p' is not an instance of Model");
                     }
                     return this;
 
@@ -139,12 +141,12 @@
                         }).then(function successCallback(response) {
 
                             // clear repository
-                            PersonenRepository.removeAll();
+                            Repository.removeAll();
 
                             // fill repository
                             if (typeof response.data === 'object') {
                                 angular.forEach(response.data, function (person) {
-                                    PersonenRepository.add(person);
+                                    Repository.add(person);
                                 });
                             } else {
                                 throw new Error("error loading json personen is type of " + typeof response.data);
@@ -174,11 +176,11 @@
                     config.reloader = 'this.loadFromCookie("'+cookieName+'")';
 
                     // clear repository
-                    PersonenRepository.removeAll();
+                    Repository.removeAll();
 
-                    // loads Personen from cookie object storage and returns the repository
+                    // loads Repository from cookie object storage and returns the repository
                     angular.forEach($cookies.getObject(cookieName), function (person) {
-                        PersonenRepository.add(person);
+                        Repository.add(person);
                     });
 
                     return this;
@@ -198,10 +200,10 @@
             };
 
 
-            PersonenRepository = new Personen();
+            Repository = new Repository();
 
 
-            return PersonenRepository;
+            return Repository;
 
 
         }]
