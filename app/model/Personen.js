@@ -122,7 +122,7 @@
 
                 },
                 // reload repository (dont'change)
-                reload: function (url) {
+                reload: function () {
                     if (config.reloader) eval(config.reloader);
                     return this;
                 },
