@@ -6,7 +6,7 @@
         "Personen",
         ['uuid2', '$cookies', '$http', function (uuid2, $cookies, $http) {
 
-            var Repository, config = {};
+            var config = {};
 
 
             // define Model
@@ -16,7 +16,7 @@
                 this.name = '';
                 this.vorname = '';
 
-                // return this sealed model width uuid
+                // return this sealed model width uuid (don't change)
                 this.id = id || uuid2.newuuid();
                 return Object.seal(this);
 
@@ -30,6 +30,8 @@
                 }
 
             };
+
+
 
 
             // define Repository Repository, don't change it
@@ -150,8 +152,6 @@
                             // clear repository
                             Repository.removeAll();
 
-                            console.log(response);
-
                             // fill repository
                             if (typeof response.data === 'object') {
                                 angular.forEach(response.data, function (person) {
@@ -178,16 +178,21 @@
 
                 },
 
-                loadFromCookie: function (cookieName) {
+                loadFromCookie: function (cookieName,forceload) {
+
 
                     // register last loading function for later reload
-                    config.reloader = 'this.loadFromCookie("' + cookieName + '")';
+                    config.reloader = 'this.loadFromCookie("' + cookieName + '",true)';
 
                     if (cookieName === config.cookieName && !forceload) {
+                        // don't load twice when not forceload is set
                         return this;
                     }
 
+                    // set cookieName to temp config
                     cookieName = cookieName || config.cookieName || false;
+                    config.cookieName = cookieName;
+                    config.url = 'cookie://'+cookieName;
 
                     // clear repository
                     Repository.removeAll();

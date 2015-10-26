@@ -12,9 +12,7 @@ angular.module('myApp.view1', ['ngRoute'])
 .controller('View1Ctrl', ['$scope','Personen',function($scope,Personen) {
 
 
-     if (Personen.countAll() == 0) Personen.loadFromCookie('_Personen');
-     $scope.personen = Personen.getAll();
-
+     $scope.personen = Personen.loadFromCookie('_Personen').getAll();
 
       $scope.addPerson = function() {
           Personen.add();
@@ -34,7 +32,7 @@ angular.module('myApp.view1', ['ngRoute'])
       }
 
      $scope.loadOther = function() {
-         Personen.loadJson('../data/personen.json',true);
+         Personen.loadJson('../data/personen.json');
       }
 
 

@@ -11,15 +11,11 @@ angular.module('myApp.view2', ['ngRoute'])
 
 .controller('View2Ctrl', ['$scope','Personen',function($scope,Personen) {
 
-
-        if (Personen.countAll() == 0) Personen.loadFromCookie('_Personen');
-        $scope.personen = Personen.getAll();
-
+        $scope.personen = Personen.loadFromCookie('_Personen').getAll();
 
         $scope.reload = function() {
             Personen.reload();
         };
 
 
-
-    }]);
+}]);
